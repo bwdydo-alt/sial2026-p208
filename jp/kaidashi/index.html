@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>SIAL フランス買い出し</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;500;700;800&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one-column shopping checklist, sticky progress header, sticky send bar; changes are sent to the shared server with the 送信 button */
+:root{
+  --bg:#f3f5f2; --card:#ffffff; --fg:#1d2420; --muted:#5f6b64; --line:#dde3de;
+  --accent:#2f6b4f; --accent-soft:#e3efe8; --warn:#9a5a00; --warn-soft:#fbefd9; --fr:#3c4f8a; --fr-soft:#e6eaf6; --done:#9aa59f; --add:#7a3a24; --add-soft:#f6e9e3; --err:#a02020;
+  --f-body:"M PLUS 1p","Hiragino Sans","Yu Gothic",system-ui,sans-serif; --f-num:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141a17; --card:#1d2420; --fg:#e6ece8; --muted:#9fada5; --line:#2e3833;
+  --accent:#6fc19a; --accent-soft:#21362b; --warn:#e8b25c; --warn-soft:#3a2e18; --fr:#9fb2ee; --fr-soft:#232a40; --done:#5d6862; --add:#e8a98d; --add-soft:#3a2520; --err:#f08a8a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141a17; --card:#1d2420; --fg:#e6ece8; --muted:#9fada5; --line:#2e3833;
+  --accent:#6fc19a; --accent-soft:#21362b; --warn:#e8b25c; --warn-soft:#3a2e18; --fr:#9fb2ee; --fr-soft:#232a40; --done:#5d6862; --add:#e8a98d; --add-soft:#3a2520; --err:#f08a8a; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.wrap{max-width:640px;margin:0 auto;padding-inline:16px;padding-block:0 120px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:12px 10px;border-bottom:1px solid var(--line)}
+.top{display:flex;justify-content:space-between;align-items:center;font-size:12.5px}
+.top a{color:var(--fr);text-decoration:none;margin-left:12px}
+h1{font-size:20px;font-weight:800;margin:6px 0 0;text-wrap:balance}
+.sub{color:var(--muted);font-size:12.5px;margin-top:2px}
+.prog{display:flex;align-items:center;gap:10px;margin-top:10px}
+.bar{flex:1;height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.pnum{font-family:var(--f-num);font-size:13px;font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.srv{font-size:12px;color:var(--muted);margin-top:6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.srv .dot{width:8px;height:8px;border-radius:99px;background:var(--done);display:inline-block}
+.srv.ok .dot{background:var(--accent)} .srv.ng .dot{background:var(--err)}
+.tabs{display:flex;gap:6px;margin-top:10px;overflow-x:auto;scrollbar-width:none}
+.tabs button{flex:0 0 auto;font:inherit;font-size:13px;font-weight:500;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.tabs button:focus-visible,.item input:focus-visible+span,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+section{margin-top:22px}
+h2{font-size:14px;font-weight:700;margin:0 0 4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+h2 .tag{font-size:11px;letter-spacing:.06em;padding:2px 8px;border-radius:4px}
+.chk .tag{background:var(--warn-soft);color:var(--warn)}
+.fr .tag{background:var(--fr-soft);color:var(--fr)}
+.hint{color:var(--muted);font-size:12.5px;margin:0 0 10px}
+ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:10px;position:relative}
+.item.pending{border-color:var(--warn)}
+.item label{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:start;padding:12px;cursor:pointer}
+.item input{position:absolute;opacity:0;width:1px;height:1px}
+.box{width:24px;height:24px;border-radius:6px;border:2px solid var(--line);display:grid;place-items:center;margin-top:1px}
+.box svg{width:14px;height:14px;opacity:0}
+.item input:checked+.box{background:var(--accent);border-color:var(--accent)}
+.item input:checked+.box svg{opacity:1}
+.name{font-weight:700;font-size:15px;min-width:0;overflow-wrap:anywhere}
+.name .ab{font-size:10.5px;font-weight:700;letter-spacing:.06em;padding:1px 6px;border-radius:4px;background:var(--add-soft);color:var(--add);margin-left:6px;vertical-align:middle}
+.name .pd{font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:4px;background:var(--warn-soft);color:var(--warn);margin-left:6px;vertical-align:middle}
+.cos{color:var(--muted);font-size:12px;margin-top:3px}
+.memo{font-size:12px;margin-top:4px;color:var(--fg)}
+.who{font-size:11.5px;color:var(--muted);margin-top:4px}
+.qty{text-align:right;white-space:nowrap}
+.qty b{font-family:var(--f-num);font-size:17px;font-variant-numeric:tabular-nums}
+.del{font:inherit;font-size:11.5px;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:2px 8px;cursor:pointer;margin-top:6px}
+.item.done{opacity:.55}
+.item.done .name{text-decoration:line-through;text-decoration-color:var(--done)}
+.empty{color:var(--muted);font-size:13px;padding:8px 0}
+
+/* add form */
+.addbtn{width:100%;margin-top:18px;font:inherit;font-weight:700;font-size:15px;padding:12px;border-radius:10px;border:2px dashed var(--accent);background:var(--accent-soft);color:var(--accent);cursor:pointer}
+.form{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:10px}
+.form[hidden]{display:none}
+.form h3{margin:0;font-size:15px}
+.f{display:grid;gap:4px}
+.f span{font-size:12px;color:var(--muted)}
+.f input,.f select{font:inherit;font-size:15px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);width:100%}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.frow{display:flex;gap:8px;justify-content:flex-end}
+.btn{font:inherit;font-size:14px;font-weight:700;padding:9px 16px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn:disabled{opacity:.5;cursor:default}
+
+/* send bar */
+.sendbar{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--card);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
+.sendbar .in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center}
+.sendbar input{font:inherit;font-size:14px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);min-width:0}
+.sendbar .cnt{font-size:12px;color:var(--muted);grid-column:1/-1}
+.sendbar .cnt b{color:var(--warn)}
+.msg{font-size:12.5px;margin-top:8px;color:var(--muted)} .msg.err{color:var(--err)}
+.foot{margin-top:28px;color:var(--muted);font-size:12px;display:grid;gap:6px}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="top"><span>SIAL PARIS 2026 ／ P-208</span><span><a href="../../">トップ</a><a href="../">現地行程</a></span></div>
+  <h1>SIAL Paris 2026 フランス買い出しリスト</h1>
+  <div class="sub">全米輸ブース／10/12版・パッキング済（BOX1〜4）反映済</div>
+  <div class="prog"><div class="bar"><i id="bar"></i></div><span class="pnum" id="pnum">0 / 0</span></div>
+  <div class="srv" id="srv"><span class="dot"></span><span id="srvtext">サーバーに接続中…</span><button class="btn" id="reload" type="button" style="padding:3px 10px;font-size:12px;font-weight:500">最新を取得</button></div>
+  <div class="tabs" role="group" aria-label="表示の切り替え">
+    <button data-f="all" aria-pressed="true">すべて</button>
+    <button data-f="todo" aria-pressed="false">未チェックだけ</button>
+    <button data-f="oni" aria-pressed="false">おにぎり協会</button>
+    <button data-f="added" aria-pressed="false">追加分</button>
+  </div>
+</header>
+<main id="list"></main>
+
+<button class="addbtn" id="addbtn" type="button">＋ 品目を追加する</button>
+<form class="form" id="form" hidden>
+  <h3>品目を追加</h3>
+  <div class="f"><span>品名（必須）</span><input id="f-n" required maxlength="120" placeholder="例：延長コード 5m"></div>
+  <div class="f2">
+    <div class="f"><span>数量</span><input id="f-buy" type="number" min="0" step="any" inputmode="decimal" placeholder="例：2"></div>
+    <div class="f"><span>単位</span><input id="f-u" maxlength="10" placeholder="個・本・kg など"></div>
+  </div>
+  <div class="f"><span>区分</span><select id="f-sec"><option value="A">A．フランスで買う物</option><option value="B">B．日本手配分の確認</option></select></div>
+  <div class="f"><span>担当・使う会社（「・」区切りで複数可）</span><input id="f-cos" maxlength="200" placeholder="例：おにぎり協会・共通"></div>
+  <div class="f"><span>買う場所</span><input id="f-store" maxlength="200" placeholder="例：Carrefour"></div>
+  <div class="f"><span>メモ</span><input id="f-memo" maxlength="300"></div>
+  <div class="frow"><button class="btn" type="button" id="f-cancel">やめる</button><button class="btn pri" type="submit">リストに入れる</button></div>
+  <div class="hint" style="margin:0">追加した品目は「送信」を押すまでサーバーには上がりません。</div>
+</form>
+
+<div class="foot">
+  <div>チェック・追加は下の「送信」でサーバー（Googleスプレッドシート）に保存され、全員の画面に反映されます。</div>
+  <div>元データ：Excel「SIAL PARIS 2026_フランス購入リスト_20261012.xlsx」</div>
+</div>
+</div>
+
+<div class="sendbar">
+  <div class="in">
+    <input id="name" maxlength="40" placeholder="あなたの名前（送信者として記録）" autocomplete="nickname">
+    <button class="btn" id="discard" type="button">取消</button>
+    <button class="btn pri" id="send" type="button" disabled>送信</button>
+    <div class="cnt" id="cnt">未送信の変更はありません</div>
+    <div class="msg" id="msg" style="grid-column:1/-1;margin:0" hidden></div>
+  </div>
+</div>
+
+<script>
+// ===== 設定：送信先（Google Apps Script ウェブアプリのURL） =====
+const SYNC_URL = "https://script.google.com/macros/s/AKfycbzQBsyq_d6XqNZAz396UeDbF8Eo0VGUtUl0apTEPHFgY184JalVDdSuS0RSaBZus-c8/exec";
+
+const BASE = [{"sec": "A", "n": "ワインクーラー（透明・720ml瓶3本程度）", "u": "個", "need": 3, "packed": null, "buy": 3, "cos": ["⑤白鶴酒造"], "store": "大型スーパー（Carrefour等）・雑貨店", "memo": ""},
+{"sec": "A", "n": "氷", "u": "kg", "need": 25, "packed": null, "buy": 25, "cos": ["⑤白鶴酒造"], "store": "スーパー（毎日補充）", "memo": ""},
+{"sec": "A", "n": "軟水（ボルビック等）", "u": "L", "need": 218, "packed": null, "buy": 218, "cos": ["⑥くりや", "⑦東洋ライス", "⑪松原米穀", "⑫木徳神糧", "おにぎり協会"], "store": "スーパー／Metro（業務用）", "memo": ""},
+{"sec": "A", "n": "電源タップ（EU仕様・E型/F型）", "u": "個", "need": 6, "packed": null, "buy": 6, "cos": ["⑧パナソニック", "⑰岩塚製菓", "おにぎり協会", "共通"], "store": "家電量販店（Darty・Boulanger）／ホームセンター", "memo": "日本の100V品は不可"},
+{"sec": "A", "n": "変換アダプタ（シュコー→E型・16A対応）", "u": "個", "need": 7, "packed": null, "buy": 7, "cos": ["⑧パナソニック"], "store": "ホームセンター（Leroy Merlin・Castorama）", "memo": "炊飯器用"},
+{"sec": "A", "n": "キッチンスケール（5kg）", "u": "台", "need": 1, "packed": null, "buy": 1, "cos": ["⑧パナソニック"], "store": "家電量販店／キッチン用品店", "memo": "パナソニック：現地調達を希望"},
+{"sec": "A", "n": "アルコール除菌スプレー", "u": "本", "need": 6, "packed": null, "buy": 6, "cos": ["⑨鈴茂器工", "⑭相馬屋", "おにぎり協会", "共通"], "store": "スーパー・薬局", "memo": "機内持込不可のためパリで購入"},
+{"sec": "A", "n": "電気ケトル（EU仕様230V）", "u": "台", "need": 1, "packed": null, "buy": 1, "cos": ["⑮アイリスオーヤマ"], "store": "家電量販店（Darty・Boulanger）", "memo": ""},
+{"sec": "A", "n": "保温ジャー（EU仕様230V）", "u": "台", "need": 1, "packed": null, "buy": 1, "cos": ["おにぎり協会"], "store": "家電量販店／アジア食材店", "memo": "協会：電気で保温できるもの。無ければ炊飯器を1台追加"},
+{"sec": "A", "n": "アトランティックサーモン（生）", "u": "kg", "need": 9, "packed": null, "buy": 9, "cos": ["おにぎり協会"], "store": "確保済みの店（Picard等）", "memo": ""},
+{"sec": "A", "n": "醤油（キッコーマン）", "u": "ml", "need": 1250, "packed": null, "buy": 1250, "cos": ["おにぎり協会"], "store": "日系食材店（京子食品等）", "memo": ""},
+{"sec": "A", "n": "マヨネーズ（キユーピー）", "u": "g", "need": 3750, "packed": null, "buy": 3750, "cos": ["おにぎり協会"], "store": "日系食材店（京子食品等）", "memo": ""},
+{"sec": "A", "n": "塩", "u": "g", "need": 500, "packed": null, "buy": 500, "cos": ["おにぎり協会"], "store": "スーパー", "memo": ""},
+{"sec": "A", "n": "ゴミ箱（分別用）", "u": "個", "need": 4, "packed": null, "buy": 4, "cos": ["共通"], "store": "ホームセンター／大型スーパー", "memo": ""},
+{"sec": "B", "n": "タッパー（手のせサイズ・1L前後）", "u": "個", "need": 14, "packed": null, "buy": 14, "cos": ["②全国米菓工業組合", "③越後製菓", "⑬SAKU"], "store": "", "memo": ""},
+{"sec": "B", "n": "テーブルクロス・敷物", "u": "枚", "need": 1, "packed": null, "buy": 1, "cos": ["②全国米菓工業組合"], "store": "", "memo": ""},
+{"sec": "B", "n": "爪楊枝", "u": "本", "need": 3000, "packed": null, "buy": 3000, "cos": ["③越後製菓", "④対馬水産"], "store": "", "memo": ""},
+{"sec": "B", "n": "小紙皿（12cm前後）", "u": "枚", "need": 4150, "packed": 2400, "buy": 1750, "cos": ["③越後製菓", "④対馬水産", "⑪松原米穀", "⑫木徳神糧"], "store": "", "memo": ""},
+{"sec": "B", "n": "A4アクリルスタンド（POP）", "u": "個", "need": 10, "packed": null, "buy": 10, "cos": ["④対馬水産", "おにぎり協会", "共通"], "store": "", "memo": ""},
+{"sec": "B", "n": "耐熱保存容器（レンジ可）", "u": "個", "need": 2, "packed": null, "buy": 2, "cos": ["④対馬水産"], "store": "", "memo": ""},
+{"sec": "B", "n": "試食用紙カップ（2oz・約60ml）", "u": "個", "need": 3000, "packed": null, "buy": 3000, "cos": ["⑥くりや", "⑰岩塚製菓"], "store": "", "memo": ""},
+{"sec": "B", "n": "スポンジ（釜洗い含む）", "u": "個", "need": 6, "packed": null, "buy": 6, "cos": ["⑧パナソニック", "共通"], "store": "", "memo": ""},
+{"sec": "B", "n": "ふきん・タオル", "u": "枚", "need": 22, "packed": null, "buy": 22, "cos": ["⑧パナソニック", "おにぎり協会", "共通"], "store": "", "memo": ""},
+{"sec": "B", "n": "食品用ラップ（30cm）", "u": "本", "need": 10, "packed": 8, "buy": 2, "cos": ["⑧パナソニック", "⑩千田みずほ", "⑫木徳神糧", "⑮アイリスオーヤマ", "おにぎり協会", "共通"], "store": "", "memo": ""},
+{"sec": "B", "n": "食器用洗剤", "u": "本", "need": 3, "packed": null, "buy": 3, "cos": ["⑨鈴茂器工", "共通"], "store": "", "memo": ""},
+{"sec": "B", "n": "使い捨てビニール手袋", "u": "枚", "need": 150, "packed": null, "buy": 150, "cos": ["⑩千田みずほ", "⑫木徳神糧"], "store": "", "memo": ""},
+{"sec": "B", "n": "使い捨てボウル（混ぜ込み用）", "u": "枚", "need": 10, "packed": null, "buy": 10, "cos": ["⑩千田みずほ"], "store": "", "memo": ""},
+{"sec": "B", "n": "しゃもじ", "u": "本", "need": 6, "packed": null, "buy": 6, "cos": ["⑩千田みずほ", "⑪松原米穀", "⑫木徳神糧", "⑮アイリスオーヤマ", "おにぎり協会"], "store": "", "memo": ""},
+{"sec": "B", "n": "計量カップ（ml目盛り付き）", "u": "個", "need": 2, "packed": null, "buy": 2, "cos": ["⑩千田みずほ", "おにぎり協会"], "store": "", "memo": ""},
+{"sec": "B", "n": "ステンレスボウル", "u": "個", "need": 9, "packed": null, "buy": 9, "cos": ["⑩千田みずほ", "⑯アルファ電子", "おにぎり協会", "共通"], "store": "", "memo": ""},
+{"sec": "B", "n": "試食カトラリー（アイススプーンサイズ）", "u": "本", "need": 50, "packed": null, "buy": 50, "cos": ["⑩千田みずほ（MC 10/15）"], "store": "", "memo": ""},
+{"sec": "B", "n": "ふりかけ", "u": "袋", "need": 4, "packed": null, "buy": 4, "cos": ["⑫木徳神糧"], "store": "", "memo": "木徳神糧：種類の指定なし"},
+{"sec": "B", "n": "ウェットティッシュ・除菌シート", "u": "個", "need": 11, "packed": null, "buy": 11, "cos": ["⑫木徳神糧", "⑭相馬屋", "共通"], "store": "", "memo": ""},
+{"sec": "B", "n": "ゴミ袋（45L）", "u": "枚", "need": 175, "packed": null, "buy": 175, "cos": ["⑫木徳神糧", "⑰岩塚製菓", "共通"], "store": "", "memo": ""},
+{"sec": "B", "n": "黒い大皿", "u": "枚", "need": 3, "packed": null, "buy": 3, "cos": ["⑬SAKU"], "store": "", "memo": "NY商談会で使用したもの"},
+{"sec": "B", "n": "紙ナプキン", "u": "枚", "need": 4250, "packed": null, "buy": 4250, "cos": ["⑬SAKU", "⑰岩塚製菓", "共通"], "store": "", "memo": ""},
+{"sec": "B", "n": "食品用ラップ（15cm）", "u": "本", "need": 2, "packed": null, "buy": 2, "cos": ["⑭相馬屋"], "store": "", "memo": ""},
+{"sec": "B", "n": "IH対応鍋（両手・深型）", "u": "個", "need": 2, "packed": null, "buy": 2, "cos": ["⑮アイリスオーヤマ", "⑯アルファ電子"], "store": "", "memo": ""},
+{"sec": "B", "n": "使い捨てスプーン（やや大きめ）", "u": "本", "need": 200, "packed": null, "buy": 200, "cos": ["⑮アイリスオーヤマ"], "store": "", "memo": ""},
+{"sec": "B", "n": "紙コップ（小）", "u": "個", "need": 50, "packed": null, "buy": 50, "cos": ["⑮アイリスオーヤマ"], "store": "", "memo": "緑茶の試飲用"},
+{"sec": "B", "n": "ふりかけ（わさび）", "u": "袋", "need": 2, "packed": null, "buy": 2, "cos": ["⑮アイリスオーヤマ"], "store": "", "memo": ""},
+{"sec": "B", "n": "海苔（おにぎり用）", "u": "枚", "need": 100, "packed": null, "buy": 100, "cos": ["⑮アイリスオーヤマ"], "store": "", "memo": ""},
+{"sec": "B", "n": "ザル", "u": "個", "need": 6, "packed": null, "buy": 6, "cos": ["⑯アルファ電子", "おにぎり協会", "共通"], "store": "", "memo": ""},
+{"sec": "B", "n": "トング", "u": "本", "need": 1, "packed": null, "buy": 1, "cos": ["⑯アルファ電子"], "store": "", "memo": ""},
+{"sec": "B", "n": "スプーン型試食容器（使い捨て）", "u": "個", "need": 500, "packed": null, "buy": 500, "cos": ["⑯アルファ電子"], "store": "", "memo": "アルファ電子"},
+{"sec": "B", "n": "山善 フィッシュロースター（ワイドグリル）", "u": "台", "need": 1, "packed": null, "buy": 1, "cos": ["おにぎり協会"], "store": "", "memo": "協会指定。日本製100Vのため変圧器とセット"},
+{"sec": "B", "n": "ダウントランス（変圧器 230V→100V）", "u": "台", "need": 1, "packed": null, "buy": 1, "cos": ["おにぎり協会"], "store": "", "memo": "ロースター用。容量はロースターW数＋余裕"},
+{"sec": "B", "n": "まな板", "u": "枚", "need": 2, "packed": null, "buy": 2, "cos": ["おにぎり協会"], "store": "", "memo": ""},
+{"sec": "B", "n": "包丁", "u": "本", "need": 2, "packed": null, "buy": 2, "cos": ["おにぎり協会"], "store": "", "memo": "預け荷物で"},
+{"sec": "B", "n": "ヘラ（ゴムベラ）", "u": "本", "need": 2, "packed": null, "buy": 2, "cos": ["おにぎり協会"], "store": "", "memo": ""},
+{"sec": "B", "n": "菜箸", "u": "膳", "need": 3, "packed": null, "buy": 3, "cos": ["おにぎり協会"], "store": "", "memo": ""},
+{"sec": "B", "n": "ティースプーン（金属）", "u": "本", "need": 6, "packed": null, "buy": 6, "cos": ["おにぎり協会"], "store": "", "memo": ""},
+{"sec": "B", "n": "調理用スプーン", "u": "本", "need": 6, "packed": null, "buy": 6, "cos": ["おにぎり協会"], "store": "", "memo": ""},
+{"sec": "B", "n": "具材保存用タッパー（2〜3L）", "u": "個", "need": 8, "packed": null, "buy": 8, "cos": ["おにぎり協会"], "store": "", "memo": ""},
+{"sec": "B", "n": "ホテルパン（GN 1/6）", "u": "個", "need": 3, "packed": null, "buy": 3, "cos": ["おにぎり協会"], "store": "", "memo": "実演中の具材入れ"},
+{"sec": "B", "n": "小皿", "u": "枚", "need": 5, "packed": null, "buy": 5, "cos": ["おにぎり協会"], "store": "", "memo": ""},
+{"sec": "B", "n": "キッチンスケール（3kg以上）", "u": "台", "need": 1, "packed": null, "buy": 1, "cos": ["おにぎり協会"], "store": "", "memo": "電池式推奨"},
+{"sec": "B", "n": "おにぎり包装袋（バーガー袋）", "u": "枚", "need": 1600, "packed": null, "buy": 1600, "cos": ["おにぎり協会"], "store": "", "memo": ""},
+{"sec": "B", "n": "ツナ缶", "u": "缶", "need": 5, "packed": null, "buy": 5, "cos": ["おにぎり協会"], "store": "", "memo": "計1,750g"},
+{"sec": "B", "n": "ペーパータオル", "u": "ロール", "need": 12, "packed": null, "buy": 12, "cos": ["共通"], "store": "", "memo": ""},
+{"sec": "B", "n": "アルミホイル", "u": "本", "need": 2, "packed": null, "buy": 2, "cos": ["共通"], "store": "", "memo": ""},
+{"sec": "B", "n": "ジッパー付き保存袋（L）", "u": "枚", "need": 40, "packed": null, "buy": 40, "cos": ["共通"], "store": "", "memo": ""},
+{"sec": "B", "n": "キッチンタイマー", "u": "個", "need": 3, "packed": null, "buy": 3, "cos": ["共通"], "store": "", "memo": ""},
+{"sec": "B", "n": "文房具（ハサミ・テープ・ペン・付箋）", "u": "式", "need": 2, "packed": null, "buy": 2, "cos": ["共通"], "store": "", "memo": ""},
+{"sec": "B", "n": "養生テープ", "u": "巻", "need": 3, "packed": null, "buy": 3, "cos": ["共通"], "store": "", "memo": ""},
+{"sec": "B", "n": "カッター", "u": "本", "need": 2, "packed": null, "buy": 2, "cos": ["共通"], "store": "", "memo": ""},
+{"sec": "B", "n": "輪ゴム・クリップ類", "u": "式", "need": 1, "packed": null, "buy": 1, "cos": ["共通"], "store": "", "memo": ""}];
+const GROUPS = [
+  {key:"A", cls:"fr", title:"A．フランスで買う物", tag:"現地で購入", hint:"もともとフランスで買う予定の物です。氷は毎日補充、サーモンは提供前日に。"},
+  {key:"B", cls:"chk", title:"B．日本手配分の確認", tag:"持参済みなら不要", hint:"日本で買う予定だった物のうち、BOX1〜4に入っていない／足りない物です。持参済みならチェックを付けてください。"}
+];
+
+// ===== 状態 =====
+// server: サーバーから取得した確定状態。pending: まだ送信していない変更（端末内に下書き保存）。
+let server = {checked:{}, added:[], latest:null};
+let pending = {checked:{}, added:[], removed:[]};
+let filter = "all";
+const DRAFT = "sial-kaidashi-draft-v2", NAME = "sial-kaidashi-name";
+try{ pending = Object.assign(pending, JSON.parse(localStorage.getItem(DRAFT)||"{}")); }catch(_){}
+const $ = id => document.getElementById(id);
+const esc = s => String(s??"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt = n => (n===""||n==null||isNaN(Number(n))) ? "" : Number(n).toLocaleString("ja-JP");
+const tick = '<svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3L13 4.5" stroke="var(--card)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const keyOf = d => d.id ? "a:"+d.id : "b:"+d.n;
+const isOn = d => { const k=keyOf(d); if(k in pending.checked) return pending.checked[k]; return !!(server.checked[k] && server.checked[k].on); };
+
+function allItems(){
+  const addedIds = new Set(pending.removed);
+  const srvAdded = server.added.filter(a => !addedIds.has(a.id));
+  return BASE.concat(srvAdded, pending.added);
+}
+function saveDraft(){ try{ localStorage.setItem(DRAFT, JSON.stringify(pending)); }catch(_){} }
+function pendingCount(){ return Object.keys(pending.checked).length + pending.added.length + pending.removed.length; }
+
+function render(){
+  const main=$("list"); main.innerHTML="";
+  const items = allItems();
+  GROUPS.forEach(g=>{
+    let list = items.filter(d=>d.sec===g.key);
+    if(filter==="todo") list=list.filter(d=>!isOn(d));
+    if(filter==="oni") list=list.filter(d=>(d.cos||[]).includes("おにぎり協会"));
+    if(filter==="added") list=list.filter(d=>d.id);
+    if(!list.length && filter!=="all") return;
+    const sec=document.createElement("section"); sec.className=g.cls;
+    sec.innerHTML=`<h2>${g.title}<span class="tag">${g.tag}</span></h2><p class="hint">${g.hint}</p>`;
+    const ul=document.createElement("ul");
+    list.forEach((d,i)=>{
+      const k=keyOf(d), on=isOn(d), id="c"+g.key+i;
+      const isPend = (k in pending.checked) || (d.id && pending.added.some(a=>a.id===d.id));
+      const li=document.createElement("li");
+      li.className="item"+(on?" done":"")+(isPend?" pending":"");
+      const memo=[d.store?`買う場所：${esc(d.store)}`:"", d.packed?`パッキング済 ${fmt(d.packed)}／必要 ${fmt(d.need)}`:"", esc(d.memo||"")].filter(Boolean).join("　");
+      const who = d.id ? `<div class="who">追加：${esc(d.by||"")}${d.ts?" "+new Date(d.ts).toLocaleString("ja-JP",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"}):""}</div>` :
+        (server.checked[k] && server.checked[k].by ? `<div class="who">${server.checked[k].on?"チェック":"チェック解除"}：${esc(server.checked[k].by)} ${new Date(server.checked[k].ts).toLocaleString("ja-JP",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})}</div>` : "");
+      li.innerHTML=`<label for="${id}"><input type="checkbox" id="${id}" ${on?"checked":""}><span class="box">${tick}</span>
+        <div style="min-width:0"><div class="name">${esc(d.n)}${d.id?'<span class="ab">追加</span>':""}${isPend?'<span class="pd">未送信</span>':""}</div><div class="cos">${(d.cos||[]).map(esc).join("・")}</div>${memo?`<div class="memo">${memo}</div>`:""}${who}${d.id?`<button class="del" type="button" data-del="${esc(d.id)}">この品目を削除</button>`:""}</div>
+        <div class="qty"><b>${fmt(d.buy)}</b> ${esc(d.u||"")}</div></label>`;
+      li.querySelector("input").addEventListener("change",e=>{
+        const val=e.target.checked, srv=!!(server.checked[k] && server.checked[k].on);
+        if(val===srv) delete pending.checked[k]; else pending.checked[k]=val;
+        saveDraft(); render();
+      });
+      const del=li.querySelector("[data-del]");
+      if(del) del.addEventListener("click",ev=>{
+        ev.preventDefault();
+        if(!confirm(`「${d.n}」をリストから削除しますか？`)) return;
+        const pi=pending.added.findIndex(a=>a.id===d.id);
+        if(pi>=0) pending.added.splice(pi,1); else pending.removed.push(d.id);
+        delete pending.checked[k]; saveDraft(); render();
+      });
+      ul.appendChild(li);
+    });
+    sec.appendChild(ul); main.appendChild(sec);
+  });
+  if(!main.children.length) main.innerHTML='<p class="empty">表示する品目はありません。</p>';
+  progress();
+}
+function progress(){
+  const items=allItems(), done=items.filter(isOn).length;
+  $("pnum").textContent=`済 ${done} / ${items.length}`;
+  $("bar").style.width=(items.length?done/items.length*100:0)+"%";
+  const n=pendingCount();
+  $("cnt").innerHTML = n ? `未送信の変更 <b>${n}件</b>（チェック ${Object.keys(pending.checked).length}・追加 ${pending.added.length}・削除 ${pending.removed.length}）` : "未送信の変更はありません";
+  $("send").disabled = !n || !SYNC_URL;
+  $("discard").disabled = !n;
+}
+function setSrv(cls, text){ const s=$("srv"); s.className="srv "+cls; $("srvtext").textContent=text; }
+function showMsg(text, err){ const m=$("msg"); m.hidden=!text; m.textContent=text||""; m.className="msg"+(err?" err":""); }
+
+async function load(){
+  if(!SYNC_URL){ setSrv("ng","サーバー未設定（管理者が設定するまで送信できません）"); render(); return; }
+  setSrv("", "最新を取得中…");
+  try{
+    const r = await fetch(SYNC_URL+"?t="+Date.now(), {cache:"no-store"});
+    const j = await r.json();
+    if(!j.ok) throw new Error(j.error||"server error");
+    applyServer(j);
+  }catch(e){ setSrv("ng","サーバーに接続できません（"+e.message+"）"); render(); }
+}
+function applyServer(j){
+  server = {checked:j.checked||{}, added:j.added||[], latest:j.latest||null};
+  // サーバーと同じ値になった保留チェックは消す
+  Object.keys(pending.checked).forEach(k=>{ const s=!!(server.checked[k]&&server.checked[k].on); if(pending.checked[k]===s) delete pending.checked[k]; });
+  pending.removed = pending.removed.filter(id=>server.added.some(a=>a.id===id));
+  saveDraft();
+  const l=server.latest;
+  setSrv("ok", l ? `サーバー最終更新：${new Date(l.ts).toLocaleString("ja-JP",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})} ${l.by}` : "サーバー接続OK（まだ記録なし）");
+  render();
+}
+async function send(){
+  const by = $("name").value.trim();
+  if(!by){ showMsg("送信者の名前を入れてください。", true); $("name").focus(); return; }
+  try{ localStorage.setItem(NAME, by); }catch(_){}
+  const names={}; allItems().forEach(d=>{ names[keyOf(d)]=d.n; });
+  const body={type:"submit", by, checked:pending.checked, names:Object.fromEntries(Object.keys(pending.checked).map(k=>[k,names[k]||""])), added:pending.added, removed:pending.removed};
+  $("send").disabled=true; showMsg("送信中…");
+  try{
+    const r = await fetch(SYNC_URL, {method:"POST", body:JSON.stringify(body), headers:{"Content-Type":"text/plain;charset=utf-8"}});
+    const j = await r.json();
+    if(!j.ok) throw new Error(j.error||"server error");
+    pending={checked:{},added:[],removed:[]}; saveDraft();
+    applyServer(j); showMsg("送信しました。");
+    setTimeout(()=>showMsg(""),3000);
+  }catch(e){ showMsg("送信に失敗しました。電波の良い所で「送信」をもう一度押してください（"+e.message+"）", true); progress(); }
+}
+
+// ===== UI =====
+document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>{ filter=b.dataset.f; document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-pressed",x===b)); render(); }));
+$("reload").addEventListener("click",load);
+$("send").addEventListener("click",send);
+$("discard").addEventListener("click",()=>{ if(confirm("未送信の変更をすべて取り消しますか？")){ pending={checked:{},added:[],removed:[]}; saveDraft(); render(); } });
+$("addbtn").addEventListener("click",()=>{ $("form").hidden=false; $("addbtn").hidden=true; $("f-n").focus(); });
+$("f-cancel").addEventListener("click",()=>{ $("form").hidden=true; $("addbtn").hidden=false; $("form").reset(); });
+$("form").addEventListener("submit",e=>{
+  e.preventDefault();
+  const n=$("f-n").value.trim(); if(!n) return;
+  const buy=$("f-buy").value.trim();
+  pending.added.push({ id: Date.now().toString(36)+Math.random().toString(36).slice(2,6), sec:$("f-sec").value, n, u:$("f-u").value.trim(), buy: buy===""?"":Number(buy),
+    cos: $("f-cos").value.split(/[・,、\/]/).map(s=>s.trim()).filter(Boolean), store:$("f-store").value.trim(), memo:$("f-memo").value.trim(), by:$("name").value.trim(), ts:Date.now() });
+  saveDraft(); $("form").reset(); $("form").hidden=true; $("addbtn").hidden=false; filter="added";
+  document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.f==="added")); render();
+  showMsg("リストに入れました。下の「送信」でサーバーに保存されます。"); setTimeout(()=>showMsg(""),4000);
+});
+try{ $("name").value = localStorage.getItem(NAME)||""; }catch(_){}
+render(); load();
+</script>
+</body>
+</html>

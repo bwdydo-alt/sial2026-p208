@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<link rel="alternate" hreflang="ja" href="../jp/">
+<title>SIAL Paris On-site Schedule</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Kaku+Gothic+New:wght@700;900&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: phone-first single column of day cards, sticky date strip, LINE-share friendly */
+:root{
+  --bg:#f5f6f9;
+  --surface:#ffffff;
+  --ink:#1a1f2e;
+  --muted:#5d6577;
+  --line:#dfe3ec;
+  --ai:#24357a;        /* 藍 accent */
+  --ai-soft:#e7eaf6;
+  --warn:#9a5b00;
+  --warn-soft:#fdf1dc;
+  --tag:#eef0f5;
+  --f-display:"Zen Kaku Gothic New","Helvetica Neue",Arial,sans-serif;
+  --f-body:"BIZ UDPGothic","Helvetica Neue",Arial,sans-serif;
+  --f-num:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#11141c;--surface:#1a1e29;--ink:#e8ebf2;--muted:#9aa2b4;--line:#2c3243;
+    --ai:#9fb0f0;--ai-soft:#232b48;--warn:#f0b65a;--warn-soft:#3a2c14;--tag:#252a38;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11141c;--surface:#1a1e29;--ink:#e8ebf2;--muted:#9aa2b4;--line:#2c3243;
+  --ai:#9fb0f0;--ai-soft:#232b48;--warn:#f0b65a;--warn-soft:#3a2c14;--tag:#252a38;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:20px 48px;display:flex;flex-direction:column;gap:18px}
+header{display:flex;flex-direction:column;gap:6px;padding-top:8px}
+.eyebrow{font-family:var(--f-num);font-size:12px;letter-spacing:.08em;color:var(--ai);font-weight:600}
+h1{font-family:var(--f-display);font-weight:900;font-size:1.75rem;line-height:1.25;margin:0;text-wrap:balance}
+.sub{color:var(--muted);font-size:.9rem;margin:0}
+h2{font-family:var(--f-display);font-weight:700;font-size:1.05rem;margin:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px}
+
+/* members */
+.members{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.mem{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:10px;background:var(--tag);min-width:0}
+.mem b{font-size:.95rem}
+.mem span{font-size:.8rem;color:var(--muted)}
+.mem.tt{background:var(--ai-soft)}
+
+/* date strip */
+.strip{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);margin-inline:-16px;padding:8px 16px;border-bottom:1px solid var(--line)}
+.strip nav{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.strip nav::-webkit-scrollbar{display:none}
+.strip a{flex:0 0 auto;text-decoration:none;color:var(--ink);font-family:var(--f-num);font-size:.85rem;font-weight:600;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+.strip a.key{border-color:var(--ai);color:var(--ai)}
+.strip a:focus-visible{outline:2px solid var(--ai);outline-offset:2px}
+
+/* day card */
+.day{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;scroll-margin-top:64px}
+.day-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--line)}
+.date{font-family:var(--f-num);font-weight:600;font-size:1.15rem;color:var(--ai)}
+.dow{font-family:var(--f-num);font-size:.8rem;color:var(--muted)}
+.what{font-family:var(--f-display);font-weight:700;font-size:1rem}
+.day.key .day-h{background:var(--ai-soft)}
+.rows{display:flex;flex-direction:column}
+.row{display:grid;grid-template-columns:6.2em 1fr;gap:12px;padding:12px 16px;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.who{font-size:.78rem;font-weight:700;color:var(--muted);letter-spacing:.04em;padding-top:2px}
+.row.bw .who{color:var(--ai)}
+.body{min-width:0;display:flex;flex-direction:column;gap:6px}
+.body p{margin:0}
+.ref .body{color:var(--muted);font-size:.88rem}
+ul.t{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+ul.t li{display:grid;grid-template-columns:4.6em 1fr;gap:8px}
+.tm{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-weight:600;font-size:.88rem}
+.grp{display:flex;flex-direction:column;gap:4px;padding:10px 12px;border-radius:8px;background:var(--tag)}
+.grp .gt{font-weight:700;font-size:.9rem}
+.names{display:flex;flex-wrap:wrap;gap:4px}
+.nm{font-size:.78rem;padding:1px 8px;border-radius:999px;background:var(--surface);border:1px solid var(--line)}
+.chk{display:inline-block;font-size:.75rem;font-weight:700;color:var(--warn);background:var(--warn-soft);padding:1px 8px;border-radius:999px;margin-left:4px;white-space:nowrap}
+.hl{font-weight:700}
+
+/* session list */
+.sess{display:flex;flex-direction:column}
+.sess div{display:grid;grid-template-columns:5.2em 1fr;gap:10px;padding:8px 0;border-top:1px dashed var(--line)}
+.sess div:first-child{border-top:0}
+
+.todo ol{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px}
+footer{color:var(--muted);font-size:.8rem;text-align:left}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+
+/* 施工（Sandra・Youcef）追記 */
+:root{--kk:#7a3a24;--kk-soft:#f6e9e3}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--kk:#e8a98d;--kk-soft:#3a2520}}
+:root[data-theme="dark"]{--kk:#e8a98d;--kk-soft:#3a2520}
+.row.kk .who{color:var(--kk)}
+.mem.kk{background:var(--kk-soft)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.8rem;color:var(--muted)}
+.legend b{color:var(--kk)}
+.note{font-size:.8rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">SIAL PARIS 2026 ／ HALL 4 · STAND P-208 · JAPAN RICE <a href="../" style="float:right;color:var(--ai)">Top</a> <a href="../jp/" style="float:right;color:var(--ai);margin-right:12px">日本語</a></div>
+    <h1>SIAL Paris On-site Schedule</h1>
+    <p class="sub">Stand build-up, show and dismantling · 12 (Mon) – 22 (Thu) October 2026 · all times Paris time</p>
+  </header>
+
+  <section class="panel" aria-labelledby="m-h">
+    <h2 id="m-h">Who is on site</h2>
+    <div class="members">
+      <div class="mem kk"><b>Sandra (Bal-Garden)</b><span>Stand construction · on site from 12 Oct</span></div>
+      <div class="mem kk"><b>Youcef (YK Conseil)</b><span>Local coordination · on site 15–22 Oct (8 days)</span></div>
+      <div class="mem"><b>Daido (Kawasaki)</b><span>Bravoworks · stand &amp; build-up contact · already in Paris</span></div>
+      <div class="mem"><b>Yoshi (Hashidate)</b><span>Bravoworks · operations · in Paris since 11 Oct</span></div>
+      <div class="mem"><b>Nao (Horota)</b><span>Bravoworks · arrives CDG 12 Oct 21:10</span></div>
+      <div class="mem"><b>Saiki</b><span>Bravoworks · arrival to be confirmed</span></div>
+      <div class="mem"><b>Mune</b><span>Bravoworks · joins 18 Oct (CDG 9:40)</span></div>
+      <div class="mem tt"><b>Nibe (TTJ)</b><span>Logistics partner · in France from 14 Oct</span></div>
+    </div>
+    <p class="legend"><b>BUILD</b> = stand construction (Sandra) and local coordination (Youcef). <span style="color:var(--ai);font-weight:700">BW</span> = Bravoworks team. Sources: SIAL Exhibitors Timetable &amp; Guide and our WhatsApp exchanges.</p>
+  </section>
+
+  <div class="strip">
+    <nav aria-label="Jump to date">
+      <a href="#d12">12 Mon</a><a href="#d13">13 Tue</a><a href="#d14" class="key">14 Wed</a><a href="#d15" class="key">15 Thu</a><a href="#d16" class="key">16 Fri</a><a href="#d17" class="key">17–21 Show</a><a href="#d22">22 Thu</a><a href="#todo">Open points</a>
+    </nav>
+  </div>
+
+  <article class="day" id="d12">
+    <div class="day-h"><span class="date">12 Oct</span><span class="dow">MON</span><span class="what">Build-up day 1 – flooring</span></div>
+    <div class="rows">
+      <div class="row kk"><div class="who">BUILD</div><div class="body">
+        <ul class="t">
+          <li><span class="tm">7:30</span><span>Temporary power 20 kW switched on (until 19:30). Hall open for exhibitors 7:30–19:30.</span></li>
+          <li><span class="tm">11:30</span><span><span class="hl">Sandra arrives at Hall 4 by car</span> (airport pick-up at 10:10; Youcef's note says 12:00). Wooden flooring brought in by Sandra's own vehicle.</span></li>
+          <li><span class="tm">all day</span><span><span class="hl">Floor installation</span></span></li>
+        </ul>
+        <p>Youcef: Logipass access obtained → truck pass for Sandra requested <span class="chk">pending approval</span></p>
+        <p>SIAL's black carpet is already laid on P-208 (see Youcef's photo). Whether the wooden floor can go on top of it, or the carpet has to come up first <span class="chk">to confirm</span></p>
+      </div></div>
+      <div class="row bw"><div class="who">BW</div><div class="body">
+        <p>Yoshi and Daido on site for preparations. <span class="hl">Nao arrives CDG 21:10</span>.</p>
+      </div></div>
+    </div>
+  </article>
+
+  <article class="day" id="d13">
+    <div class="day-h"><span class="date">13 Oct</span><span class="dow">TUE</span><span class="what">Build-up day 2 – walls</span></div>
+    <div class="rows">
+      <div class="row kk"><div class="who">BUILD</div><div class="body">
+        <ul class="t">
+          <li><span class="tm">7:30</span><span>Temporary power 20 kW (Youcef's note: until 22:00)</span></li>
+          <li><span class="tm">all day</span><span><span class="hl">Wall construction</span></span></li>
+        </ul>
+        <p>Graphics (printed wall panels) collected from the printer in Poznań by Sandra's team → delivered to the stand on 14 Oct.</p>
+        <p>Daido → Sandra: elevation drawings (2 doors, TV position/height, wall height) sent for confirmation by 13 Oct.</p>
+      </div></div>
+      <div class="row bw"><div class="who">BW</div><div class="body">
+        <p>Preparations in Paris.</p>
+      </div></div>
+    </div>
+  </article>
+
+  <article class="day key" id="d14">
+    <div class="day-h"><span class="date">14 Oct</span><span class="dow">WED</span><span class="what">Build-up day 3 – graphics, main power</span></div>
+    <div class="rows">
+      <div class="row kk"><div class="who">BUILD</div><div class="body">
+        <ul class="t">
+          <li><span class="tm">7:30</span><span>Temporary power 20 kW (until 14:00)</span></li>
+          <li><span class="tm">14:00</span><span><span class="hl">Main power 60 kW switched on</span> (Viparis). From now on the stand runs on the main supply.</span></li>
+          <li><span class="tm">all day</span><span><span class="hl">Graphics delivered and mounted</span></span></li>
+        </ul>
+      </div></div>
+      <div class="row bw"><div class="who">BW</div><div class="body">
+        <p>Nao, Daido and Saiki may visit Hall 4 to see progress. Yoshi on standby in the city for shopping / errands.</p>
+      </div></div>
+      <div class="row ref"><div class="who">Delegation</div><div class="body">
+        <p>Main Japanese delegation lands CDG 19:30 (AF287) and checks in at the hotel around 21:30.</p>
+      </div></div>
+    </div>
+  </article>
+
+  <article class="day key" id="d15">
+    <div class="day-h"><span class="date">15 Oct</span><span class="dow">THU</span><span class="what">Build-up day 4 – Youcef on site, rice cookers delivered</span></div>
+    <div class="rows">
+      <div class="row kk"><div class="who">BUILD</div><div class="body">
+        <ul class="t">
+          <li><span class="tm">7:30</span><span>Hall open 7:30–22:00. <span class="hl">Youcef on site</span> (build-up 15–16, show 17–21, dismantling 22)</span></li>
+          <li><span class="tm">9:00</span><span>SIAL fitted-stand deliveries start (for reference)</span></li>
+          <li><span class="tm">all day</span><span>Sandra continues: furniture, TV, counters. <span class="hl">End time of work on 15 Oct</span> <span class="chk">to confirm</span></span></li>
+          <li><span class="tm">evening</span><span>7 rice cookers (ESACO / Panasonic) delivered to P-208 after the ICP event. <span class="hl">Daido stays at the stand until about 21:00</span> to receive them.</span></li>
+        </ul>
+      </div></div>
+      <div class="row bw"><div class="who">BW</div><div class="body">
+        <p>Nao and Yoshi at Institut Culinaire de Paris (ICP) from 8:00 for the masterclass and business meeting (11:00–17:00). Reception 19:30.</p>
+      </div></div>
+    </div>
+  </article>
+
+  <article class="day key" id="d16">
+    <div class="day-h"><span class="date">16 Oct</span><span class="dow">FRI</span><span class="what">Build-up day 5 – handover</span></div>
+    <div class="rows">
+      <div class="row kk"><div class="who">BUILD</div><div class="body">
+        <ul class="t">
+          <li><span class="tm">7:30</span><span>Hall open 7:30–22:00. Youcef on site</span></li>
+          <li><span class="tm">14:00</span><span><span class="hl">Stand handover</span> – Taking-over Protocol to be signed</span></li>
+        </ul>
+        <p>No motor vehicles inside the halls today (except with special permission). One person must stay on the stand at all times during build-up. The safety committee inspection (date/time announced later) requires the person in charge to be present.</p>
+      </div></div>
+      <div class="row bw"><div class="who">BW</div><div class="body">
+        <p>Whole BW team at Hall 4 from about 8:00: first delivery from Japan (T&amp;T), equipment check, Suzumo machines. No cooking yet (electrical and drainage work in progress). Exhibitors set up their counters 10:00–14:00.</p>
+      </div></div>
+    </div>
+  </article>
+
+  <article class="day key" id="d17">
+    <div class="day-h"><span class="date">17–21 Oct</span><span class="dow">SAT–WED</span><span class="what">SIAL Paris – show days</span></div>
+    <div class="rows">
+      <div class="row kk"><div class="who">BUILD</div><div class="body">
+        <p>Youcef on site every show day. Sandra's presence during the show <span class="chk">to confirm</span></p>
+        <ul class="t">
+          <li><span class="tm">17 Sat</span><span>All vehicles must be in the designated car park (P1) by 9:00.</span></li>
+          <li><span class="tm">21 Wed</span><span>Show closes 17:00. Exhibitors may stay until midnight (power until 19:30). Storage and furniture to be emptied 17:00–21:00. Suzumo's pick-up vehicle at 17:30.</span></li>
+        </ul>
+      </div></div>
+      <div class="row bw"><div class="who">BW</div><div class="body">
+        <p>BW team leaves the hotel before 6:30 and is at the stand from 7:00. Public opening 10:00–18:30 (last day until 17:00).</p>
+        <p>On the stand: Onigiri Association demos 11:00 / 13:00 / 15:00, Suzumo tastings 10:00 / 12:00 / 14:00 every day. Second delivery from Japan on 19 Oct. Mune joins on 18 Oct (CDG 9:40).</p>
+      </div></div>
+    </div>
+  </article>
+
+  <article class="day" id="d22">
+    <div class="day-h"><span class="date">22 Oct</span><span class="dow">THU</span><span class="what">Dismantling</span></div>
+    <div class="rows">
+      <div class="row kk"><div class="who">BUILD</div><div class="body">
+        <ul class="t">
+          <li><span class="tm">7:30</span><span><span class="hl">Dismantling</span> 7:30–19:30. Sandra dismantles the stand (start time <span class="chk">to confirm</span>). Youcef on site.</span></li>
+        </ul>
+        <p>All materials brought in (wooden floor, adhesives, etc.) must be removed – this is the exhibitor's responsibility. Exit inventory form to be checked at the exhibitor desk. Lowe rental equipment is collected the same day.</p>
+      </div></div>
+      <div class="row bw"><div class="who">BW</div><div class="body">
+        <p>Japanese delegation departs CDG 10:10 (AF186). BW team sees them off and attends the dismantling.</p>
+      </div></div>
+    </div>
+  </article>
+
+  <section class="panel todo" id="todo" aria-labelledby="t-h">
+    <h2 id="t-h">Open points – please confirm</h2>
+    <ol>
+      <li class="hl">Can the wooden floor be laid on top of the SIAL carpet already on P-208, or does the carpet have to be removed first? (Sandra)</li>
+      <li>Truck pass for Sandra – approval status, and actual arrival time on 12 Oct (11:30 or 12:00). (Youcef / Sandra)</li>
+      <li>End time of construction work on 15 Oct – the rice cookers arrive in the evening. (Sandra)</li>
+      <li>Will Sandra (or a team member) be present during the show days? Dismantling start time and number of people on 22 Oct. (Sandra)</li>
+      <li>Delivery date/time of rental furniture (Meblostrefa) and the 70-inch TV. (Sandra)</li>
+      <li>Sound system: availability and delivery date of the small rental set (speaker, mixer with XLR inputs). (Youcef)</li>
+    </ol>
+  </section>
+
+  <footer>Last updated 12 Oct 2026 · Bravoworks, Inc. (Daido Kawasaki) · Based on the SIAL Exhibitors Timetable / Guide and our WhatsApp exchanges. Questions: WhatsApp group "SialPari2026_rice" or Daido directly.</footer>
+</div>
+</body>
+</html>
