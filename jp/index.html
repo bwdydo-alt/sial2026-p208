@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<link rel="alternate" hreflang="en" href="../">
+<title>SIAL Paris 現地行程</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Kaku+Gothic+New:wght@700;900&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: phone-first single column of day cards, sticky date strip, LINE-share friendly */
+:root{
+  --bg:#f5f6f9;
+  --surface:#ffffff;
+  --ink:#1a1f2e;
+  --muted:#5d6577;
+  --line:#dfe3ec;
+  --ai:#24357a;        /* 藍 accent */
+  --ai-soft:#e7eaf6;
+  --warn:#9a5b00;
+  --warn-soft:#fdf1dc;
+  --tag:#eef0f5;
+  --f-display:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",sans-serif;
+  --f-body:"BIZ UDPGothic","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+  --f-num:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#11141c;--surface:#1a1e29;--ink:#e8ebf2;--muted:#9aa2b4;--line:#2c3243;
+    --ai:#9fb0f0;--ai-soft:#232b48;--warn:#f0b65a;--warn-soft:#3a2c14;--tag:#252a38;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11141c;--surface:#1a1e29;--ink:#e8ebf2;--muted:#9aa2b4;--line:#2c3243;
+  --ai:#9fb0f0;--ai-soft:#232b48;--warn:#f0b65a;--warn-soft:#3a2c14;--tag:#252a38;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:20px 48px;display:flex;flex-direction:column;gap:18px}
+header{display:flex;flex-direction:column;gap:6px;padding-top:8px}
+.eyebrow{font-family:var(--f-num);font-size:12px;letter-spacing:.08em;color:var(--ai);font-weight:600}
+h1{font-family:var(--f-display);font-weight:900;font-size:1.75rem;line-height:1.25;margin:0;text-wrap:balance}
+.sub{color:var(--muted);font-size:.9rem;margin:0}
+h2{font-family:var(--f-display);font-weight:700;font-size:1.05rem;margin:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px}
+
+/* members */
+.members{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.mem{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:10px;background:var(--tag);min-width:0}
+.mem b{font-size:.95rem}
+.mem span{font-size:.8rem;color:var(--muted)}
+.mem.tt{background:var(--ai-soft)}
+
+/* date strip */
+.strip{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);margin-inline:-16px;padding:8px 16px;border-bottom:1px solid var(--line)}
+.strip nav{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.strip nav::-webkit-scrollbar{display:none}
+.strip a{flex:0 0 auto;text-decoration:none;color:var(--ink);font-family:var(--f-num);font-size:.85rem;font-weight:600;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+.strip a.key{border-color:var(--ai);color:var(--ai)}
+.strip a:focus-visible{outline:2px solid var(--ai);outline-offset:2px}
+
+/* day card */
+.day{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;scroll-margin-top:64px}
+.day-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--line)}
+.date{font-family:var(--f-num);font-weight:600;font-size:1.15rem;color:var(--ai)}
+.dow{font-family:var(--f-num);font-size:.8rem;color:var(--muted)}
+.what{font-family:var(--f-display);font-weight:700;font-size:1rem}
+.day.key .day-h{background:var(--ai-soft)}
+.rows{display:flex;flex-direction:column}
+.row{display:grid;grid-template-columns:5.2em 1fr;gap:12px;padding:12px 16px;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.who{font-size:.78rem;font-weight:700;color:var(--muted);letter-spacing:.04em;padding-top:2px}
+.row.bw .who{color:var(--ai)}
+.body{min-width:0;display:flex;flex-direction:column;gap:6px}
+.body p{margin:0}
+.ref .body{color:var(--muted);font-size:.88rem}
+ul.t{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+ul.t li{display:grid;grid-template-columns:3.6em 1fr;gap:8px}
+.tm{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-weight:600;font-size:.88rem}
+.grp{display:flex;flex-direction:column;gap:4px;padding:10px 12px;border-radius:8px;background:var(--tag)}
+.grp .gt{font-weight:700;font-size:.9rem}
+.names{display:flex;flex-wrap:wrap;gap:4px}
+.nm{font-size:.78rem;padding:1px 8px;border-radius:999px;background:var(--surface);border:1px solid var(--line)}
+.chk{display:inline-block;font-size:.75rem;font-weight:700;color:var(--warn);background:var(--warn-soft);padding:1px 8px;border-radius:999px;margin-left:4px;white-space:nowrap}
+.hl{font-weight:700}
+
+/* session list */
+.sess{display:flex;flex-direction:column}
+.sess div{display:grid;grid-template-columns:4.2em 1fr;gap:10px;padding:8px 0;border-top:1px dashed var(--line)}
+.sess div:first-child{border-top:0}
+
+.todo ol{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px}
+footer{color:var(--muted);font-size:.8rem;text-align:left}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+
+/* 施工（Sandra・Youcef）追記 */
+:root{--kk:#7a3a24;--kk-soft:#f6e9e3}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--kk:#e8a98d;--kk-soft:#3a2520}}
+:root[data-theme="dark"]{--kk:#e8a98d;--kk-soft:#3a2520}
+.row.kk .who{color:var(--kk)}
+.mem.kk{background:var(--kk-soft)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.8rem;color:var(--muted)}
+.legend b{color:var(--kk)}
+.note{font-size:.8rem;color:var(--muted)}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">SIAL PARIS 2026 ／ HALL 4・P-208 <a href="../" style="float:right;color:var(--ai)">English</a></div>
+    <h1>SIAL Paris 現地行程</h1>
+    <p class="sub">ブラボーチーム・二瓶さん＋施工（Sandra・Youcef）｜10/12（月）〜10/22（木）｜時刻はすべてパリ時間</p>
+  </header>
+
+  <section class="panel" aria-labelledby="m-h">
+    <h2 id="m-h">メンバー</h2>
+    <div class="members">
+      <div class="mem"><b>なおさん</b><span>10/12 21:10 CDG着</span></div>
+      <div class="mem"><b>ダイドー</b><span>現地入り済み</span></div>
+      <div class="mem"><b>さいきちゃん</b><span>到着便 確認中</span></div>
+      <div class="mem"><b>ヨシ</b><span>10/11 現地入り済み</span></div>
+      <div class="mem"><b>ムネさん</b><span>10/18 9:40 CDG着で合流</span></div>
+      <div class="mem tt"><b>二瓶さん（TTJ）</b><span>10/14 フランス着</span></div>
+      <div class="mem kk"><b>Sandra（Bal-Garden）</b><span>施工。10/12 車で会場入り（11:30〜12:00予定）</span></div>
+      <div class="mem kk"><b>Youcef（YK Conseil）</b><span>現地コーディネート。10/15〜22 在場</span></div>
+    <p class="legend"><b>施工</b>＝ブース施工（Sandra）と現地コーディネート（Youcef）の動き。出典：SIAL出展者タイムテーブル／ガイド・関係者とのやりとり。</p>
+    </div>
+  </section>
+
+  <div class="strip">
+    <nav aria-label="日付へ移動">
+      <a href="#d12">12 月</a><a href="#d13">13 火</a><a href="#d14" class="key">14 水</a><a href="#d15" class="key">15 木</a><a href="#d16" class="key">16 金</a><a href="#d17" class="key">17–21 会期</a><a href="#d22">22 木</a><a href="#todo">要確認</a>
+    </nav>
+  </div>
+
+  <article class="day" id="d12">
+    <div class="day-h"><span class="date">10/12</span><span class="dow">MON</span><span class="what">現地準備</span></div>
+    <div class="rows">
+      <div class="row bw"><div class="who">BW</div><div class="body"><p>ヨシ・ダイドーは現地で準備。<span class="hl">なおさんが21:10にCDG着</span>（ドーハ経由）。</p></div></div>
+      <div class="row kk"><div class="who">施工</div><div class="body">
+        <ul class="t">
+          <li><span class="tm">7:30</span><span>設営用電源20kW 通電（〜19:30）。会場の設営時間も7:30〜19:30</span></li>
+          <li><span class="tm">11:30</span><span><span class="hl">Sandra 会場入り</span>（同僚を空港10:10に迎えて車で。Youcefの掲示では12:00想定）。木目の床材は自前で持込み</span></li>
+          <li><span class="tm">終日</span><span><span class="hl">床の施工</span>（Sandra「床は今日仕上げる」）</span></li>
+        </ul>
+        <p>Youcef：Logipass（車両パス）にアクセス取得→Sandraのトラック用パスを申請中<span class="chk">承認待ち</span></p>
+        <p>P-208にはSIALの黒カーペットが既に敷かれていた（Youcefの写真）。木目床をその上に敷けるか、剥がすか<span class="chk">要確認</span></p>
+      </div></div>
+    </div>
+  </article>
+
+  <article class="day" id="d13">
+    <div class="day-h"><span class="date">10/13</span><span class="dow">TUE</span><span class="what">現地準備</span></div>
+    <div class="rows">
+      <div class="row bw"><div class="who">BW</div><div class="body"><p>準備。各社の商談用シート（英・仏）の確認は日本時間17:00締切。</p></div></div>
+      <div class="row"><div class="who">TTJ</div><div class="body"><p>現地スタッフが商品を受け取り、倉庫で保管（13〜14日）。</p></div></div>
+      <div class="row kk"><div class="who">施工</div><div class="body">
+        <ul class="t">
+          <li><span class="tm">7:30</span><span>設営用電源20kW 通電（Youcef掲示では〜22:00）</span></li>
+          <li><span class="tm">終日</span><span><span class="hl">壁の施工</span>（Sandra「壁は明日＝13日」）</span></li>
+        </ul>
+        <p>グラフィック（壁面印刷物）はSandra手配でポズナンの印刷所から受取→14日に搬入。</p>
+        <p>DYDO→Sandra：立面図（扉2か所・TV位置と高さ・壁の高さ）の確認を13日までに送る。</p>
+      </div></div>
+    </div>
+  </article>
+
+  <article class="day key" id="d14">
+    <div class="day-h"><span class="date">10/14</span><span class="dow">WED</span><span class="what">二手に分かれて準備・本隊到着</span></div>
+    <div class="rows">
+      <div class="row bw"><div class="who">BW</div><div class="body">
+        <div class="grp"><span class="gt">会場確認組</span><div class="names"><span class="nm">なおさん</span><span class="nm">ダイドー</span><span class="nm">さいきちゃん</span></div></div>
+        <div class="grp"><span class="gt">買い出し・フリー</span><div class="names"><span class="nm">ヨシ</span></div><p>市内に待機。追加で必要なものを届けるなど、その場で動けるようにしておく。</p></div>
+      </div></div>
+      <div class="row"><div class="who">二瓶さん</div><div class="body"><p class="hl">フランス着</p></div></div>
+      <div class="row ref"><div class="who">本隊</div><div class="body"><p>19:30 CDG着（AF287）→ 21:30頃 ホテルにチェックイン</p></div></div>
+      <div class="row kk"><div class="who">施工</div><div class="body">
+        <ul class="t">
+          <li><span class="tm">7:30</span><span>設営用電源20kW（〜14:00）</span></li>
+          <li><span class="tm">14:00</span><span><span class="hl">主電源60kW 通電</span>（Viparis。以後は本電源）</span></li>
+          <li><span class="tm">終日</span><span><span class="hl">グラフィック搬入</span>・貼り込み（Sandra）</span></li>
+        </ul>
+        <p class="note">会場確認組（なおさん・ダイドー・さいきちゃん）がSIAL会場に行く場合は、施工の進み具合の確認を兼ねる。</p>
+      </div></div>
+    </div>
+  </article>
+
+  <article class="day key" id="d15">
+    <div class="day-h"><span class="date">10/15</span><span class="dow">THU</span><span class="what">マスタークラス・商談会（パリ料理研究所 ICP）</span></div>
+    <div class="rows">
+      <div class="row bw"><div class="who">BW</div><div class="body">
+        <div class="names"><span class="nm">なおさん</span><span class="nm">ヨシ</span></div>
+        <p><span class="hl">8:00頃に会場入り</span>して商談会を対応。</p>
+      </div></div>
+      <div class="row"><div class="who">二瓶さん</div><div class="body">
+        <p>商談会への納品対応、商談会に出席。</p>
+        <p>19:30〜の懇親会に参加するか<span class="chk">要確認</span></p>
+      </div></div>
+      <div class="row ref"><div class="who">本隊</div><div class="body">
+        <ul class="t">
+          <li><span class="tm">8:30</span><span>出展者の会場入り・搬入（パナソニックの炊飯器もこの時間に届く）</span></li>
+          <li><span class="tm">11:00</span><span>商談会スタート（〜17:00、招待客のみ）</span></li>
+          <li><span class="tm">12:00</span><span>デモ①・13:30 デモ②・15:00 デモ③</span></li>
+          <li><span class="tm">〜18:00</span><span>搬出・撤収</span></li>
+          <li><span class="tm">19:30</span><span>懇親会</span></li>
+        </ul>
+      </div></div>
+      <div class="row kk"><div class="who">施工</div><div class="body">
+        <ul class="t">
+          <li><span class="tm">7:30</span><span>設営時間 7:30〜22:00。<span class="hl">Youcef 現地入り</span>（設営立会い）</span></li>
+          <li><span class="tm">9:00</span><span>SIAL側のフィッテッドスタンド納品開始（参考）</span></li>
+          <li><span class="tm">終日</span><span>Sandra 施工続行（家具・TV・カウンター仕上げ）。<span class="hl">施工の終了時刻</span><span class="chk">要確認</span></span></li>
+          <li><span class="tm">夕方〜</span><span>炊飯器7台（ESACO／パナソニック）がICP商談会のあとP-208へ搬入。<span class="hl">ダイドーが21:00頃まで会場で受け取り</span></span></li>
+        </ul>
+      </div></div>
+    </div>
+  </article>
+
+  <article class="day key" id="d16">
+    <div class="day-h"><span class="date">10/16</span><span class="dow">FRI</span><span class="what">SIAL会場準備・ボン・マルシェ視察</span></div>
+    <div class="rows">
+      <div class="row bw"><div class="who">BW</div><div class="body">
+        <p><span class="hl">全員で8:00頃に会場入り</span>して受け入れ準備（搬入①・検品、鈴茂器工の機器搬入）。電気・排水の工事中なので炊飯はできない。</p>
+        <div class="grp"><span class="gt">ボン・マルシェ視察 同行</span><div class="names"><span class="nm">ヨシ</span><span class="nm">二瓶さん</span></div></div>
+      </div></div>
+      <div class="row"><div class="who">二瓶さん</div><div class="body"><p><span class="hl">SIALへの第1回納品</span>を対応。午後はボン・マルシェ視察に同行。</p></div></div>
+      <div class="row ref"><div class="who">本隊</div><div class="body">
+        <ul class="t">
+          <li><span class="tm">9:00</span><span>ホテル出発（バス）</span></li>
+          <li><span class="tm">10:00</span><span>各社ブース準備（〜14:00）</span></li>
+          <li><span class="tm">15:00</span><span>ボン・マルシェ「Super Japon」視察（〜17:00）</span></li>
+          <li><span class="tm">18:00</span><span>ホテル着</span></li>
+        </ul>
+      </div></div>
+      <div class="row kk"><div class="who">施工</div><div class="body">
+        <ul class="t">
+          <li><span class="tm">7:30</span><span>設営時間 7:30〜22:00。Youcef 設営立会い</span></li>
+          <li><span class="tm">14:00</span><span><span class="hl">ブース引渡し</span>（Taking-over Protocolに署名）</span></li>
+        </ul>
+        <p>この日はホール内へのモーター車の乗り入れ不可（特別許可を除く）。設営中はスタンドに常時1名在席。安全委員会の検査（日時は後日通知）には責任者が立ち会う。</p>
+      </div></div>
+    </div>
+  </article>
+
+  <article class="day key" id="d17">
+    <div class="day-h"><span class="date">10/17–21</span><span class="dow">SAT–WED</span><span class="what">SIAL Paris 会期（5日間）</span></div>
+    <div class="rows">
+      <div class="row bw"><div class="who">BW</div><div class="body">
+        <ul class="t">
+          <li><span class="tm">6:30前</span><span class="hl">ホテル出発</span></li>
+          <li><span class="tm">7:00</span><span class="hl">会場入り</span></li>
+        </ul>
+      </div></div>
+      <div class="row"><div class="who">二瓶さん</div><div class="body"><p>通訳13名の現場管理。19日は第2回納品。</p></div></div>
+      <div class="row ref"><div class="who">本隊</div><div class="body"><p>8:00ホテル発 → 9:00会場着。開場10:00〜18:00（最終日は17:00まで）。</p></div></div>
+      <div class="row"><div class="who">日ごと</div><div class="body sess">
+        <div><span class="tm">17 土</span><span>開幕。おにぎりのお米：くりや</span></div>
+        <div><span class="tm">18 日</span><span><span class="hl">ムネさん合流</span>（9:40 CDG着）。お米：東洋ライス</span></div>
+        <div><span class="tm">19 月</span><span><span class="hl">搬入②</span>（二瓶さん納品）。お米：千田みずほ</span></div>
+        <div><span class="tm">20 火</span><span>お米：松原米穀</span></div>
+        <div><span class="tm">21 水</span><span>最終日（〜17:00）・<span class="hl">撤収</span>。お米：木徳神糧</span></div>
+      </div></div>
+      <div class="row"><div class="who">ブース内</div><div class="body"><p>おにぎり協会の実演 11:00／13:00／15:00、鈴茂器工の試食 10:00／12:00／14:00（毎日）</p></div></div>
+      <div class="row kk"><div class="who">施工</div><div class="body">
+        <p>Youcef は会期5日間在場。Sandraの会期中の在場は<span class="chk">要確認</span>。</p>
+        <ul class="t">
+          <li><span class="tm">17 土</span><span>9:00までに全車両を所定駐車場（P1）へ</span></li>
+          <li><span class="tm">21 水</span><span>17:00閉場→出展者は24:00まで在館可（電源は19:30まで）。収納・備品は17:00〜21:00に空にする。鈴茂器工の引取り車両 17:30</span></li>
+        </ul>
+      </div></div>
+    </div>
+  </article>
+
+  <article class="day" id="d22">
+    <div class="day-h"><span class="date">10/22</span><span class="dow">THU</span><span class="what">本隊帰国</span></div>
+    <div class="rows">
+      <div class="row bw"><div class="who">BW</div><div class="body"><p>本隊の見送り。Loweのレンタル品の引き取り日。</p></div></div>
+      <div class="row ref"><div class="who">本隊</div><div class="body"><p>6:00ロビー集合 → 10:10 CDG発（AF186）→ 23日 6:25 羽田着</p></div></div>
+      <div class="row kk"><div class="who">施工</div><div class="body">
+        <ul class="t">
+          <li><span class="tm">7:30</span><span><span class="hl">撤去日</span>（7:30〜19:30）。Sandra 撤去（時刻<span class="chk">要確認</span>）・Youcef 撤去立会い</span></li>
+        </ul>
+        <p>木目床材・接着剤など持込み分はすべて撤去（出展者側の責任）。退場時はexhibitor deskでexit inventory formを確認。</p>
+      </div></div>
+    </div>
+  </article>
+
+  <section class="panel todo" id="todo" aria-labelledby="t-h">
+    <h2 id="t-h">要確認</h2>
+    <ol>
+      <li>15日の懇親会に二瓶さんが参加するか</li>
+      <li>14日の「会場確認」はSIAL会場か商談会場（ICP）か</li>
+      <li>15日のダイドー・さいきちゃんの動き</li>
+      <li>さいきちゃんの到着便、BW各メンバーの帰国便</li>
+      <li class="hl">【施工】木目床をSIALカーペットの上に敷けるか、剥がすか（Sandra未回答）</li>
+      <li>【施工】Sandraのトラック用パス承認（承認待ち）と到着時刻（11:30／12:00）</li>
+      <li>【施工】15日の施工終了時刻（炊飯器の夜間搬入を受け入れられるか）</li>
+      <li>【施工】Sandraの会期中の在場、22日の撤去時刻と人数、帰路</li>
+      <li>【施工】レンタル家具（Meblostrefa）と70インチTVの納品日時</li>
+      <li>【施工】音響ミキサーのレンタル可否・納期</li>
+    </ol>
+  </section>
+
+  <footer>最終更新 2026/10/12｜元にした資料：事業概要書（10/12版）、関係者メール、チーム内の指示、SIAL Exhibitors Timetable／Guide｜ブラボーワークス株式会社</footer>
+</div>
+</body>
+</html>
